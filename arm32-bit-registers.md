@@ -21,3 +21,14 @@ Contains the pointer to the memory location that contains the insruction to go b
 Contains the pointer to the next instruction
 ### CPSR: Current Program State Register
 Flag register, contains flags that tell you about the state of the CPU. For example it could contain the carry bit of an addition that overflowed.
+
+
+## Little recap
+
+| Register | Description                    |
+|----------|--------------------------------|
+| R0-R12   | General-purpose registers      |
+| R13 (SP) | Stack Pointer                  |
+| R14 (LR) | Link Register                  |
+| R15 (PC) | Program Counter                |
+| CPSR     | Current Program Status Register|
