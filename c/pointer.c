@@ -1,18 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-// something is wrong here :(
-int swap(int *a, int *b) {
-  int temp = 0;
-  temp = *a;
-  *a = *b;
-  *b = temp;
-  return 0;
+int foo(int **ptr) {
+    int value = 10;
+    *ptr = (int *)malloc(value);  
+
+    if (ptr == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return -1;
+    }
+
+    **ptr = value; 
+    return 0;
 }
 
 int main() {
-  int x = 10, y = 20;
-  printf("%d %d\n", x, y);
-  swap(&x, &y);
-  printf("%d %d\n", x, y);
-  return 0;
+    int *ptr = NULL;
+    if (0 != foo(&ptr)) {
+        return -1;
+    }
+
+    if (ptr != NULL) {
+        printf("Value: %d\n", *ptr);
+        free(ptr);
+    }
+
+    return 0;
 }
