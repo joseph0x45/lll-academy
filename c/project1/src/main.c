@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "common.h"
 #include "file.h"
@@ -46,16 +47,30 @@ int main(int argc, char *argv[]) {
     db_fd = create_db_file(file_path);
     if (db_fd == STATUS_ERROR) {
       printf("Unable to create database file\n");
+      close(db_fd);
       return -1;
     }
     if (create_db_header(db_fd, &header) == STATUS_ERROR) {
       printf("Failed to create database header\n");
+      close(db_fd);
+      free(header);
+      return -1;
+    }
+    if (output_file(db_fd, header, NULL) == STATUS_ERROR) {
+      printf("Failed to write database header\n");
+      free(header);
+      close(db_fd);
       return -1;
     }
   } else {
     db_fd = open_db_file(file_path);
     if (db_fd == STATUS_ERROR) {
       printf("Unable to open database file\n");
+      return -1;
+    }
+    if (validate_db_header(db_fd, &header) == STATUS_ERROR) {
+      printf("Invalid database header\n");
+      close(db_fd);
       return -1;
     }
   }
